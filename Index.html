@@ -134,32 +134,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Inter'
 .catalog-count{font-size:10px;color:var(--muted);background:var(--card);border:1px solid var(--border);padding:2px 8px;border-radius:4px}
 .info-page{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px;scrollbar-width:none}
 .info-page::-webkit-scrollbar{display:none}
-.account-hero{background:linear-gradient(135deg,#1a0a0a,#2a0a0a);border:1px solid var(--red-mid);border-radius:14px;padding:20px 16px;margin-bottom:14px;display:flex;align-items:center;gap:14px;}
-.account-avatar{width:56px;height:56px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:22px;color:#fff;flex-shrink:0;}
-.account-name{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:#fff}
-.account-server{font-size:11px;color:var(--muted);margin-top:2px}
-.account-status{display:inline-flex;align-items:center;gap:5px;margin-top:6px;font-size:11px;font-weight:600;color:#4ade80}
-.status-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
-.stat-box{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 10px;text-align:center;cursor:pointer;transition:all .15s}
-.stat-box.focused{border-color:var(--red);background:var(--red-mid)}
-.stat-num{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--red);line-height:1}
-.stat-lbl{font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
-.info-section-title{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin:16px 0 8px}
-.info-rows{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px}
-.info-row{display:flex;align-items:center;padding:12px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:all .15s}
-.info-row:last-child{border-bottom:none}
-.info-row.focused{background:var(--red-mid);border-bottom-color:var(--red)}
-.info-row-icon{font-size:16px;width:28px;flex-shrink:0}
-.info-row-content{flex:1;min-width:0}
-.info-row-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;font-weight:600}
-.info-row-value{font-size:13px;color:#fff;font-weight:500;margin-top:2px;word-break:break-all}
-.info-row-value.mono{font-family:monospace;font-size:11px;color:var(--red)}
-.info-row-value.green{color:#4ade80}
-.info-row-value.dim{color:var(--muted);font-size:11px}
-.info-row-copy{padding:6px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:var(--card);border:1px solid var(--border);color:var(--text);flex-shrink:0;-webkit-tap-highlight-color:transparent;transition:all .15s}
-.info-row-copy.focused{background:var(--red);color:#fff;border-color:var(--red)}
 .loading-screen{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:var(--muted)}
 .spinner{width:32px;height:32px;border:3px solid #2a2a2a;border-top-color:var(--red);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -429,7 +403,7 @@ function filtered(type,cat,q){
 }
 function buildUI(){
   const nav=document.getElementById("bottomNav");nav.innerHTML="";
-  const tabs=[{icon:"🏠",label:"Início",id:"inicio"},{icon:"📡",label:"Canais",id:"canais"},{icon:"⊞",label:"Catálogo",id:"catalogo"},{icon:"👤",label:"Conta",id:"conta"}];
+  const tabs=[{icon:"🏠",label:"Início",id:"inicio"},{icon:"📡",label:"Canais",id:"canais"},{icon:"⊞",label:"Catálogo",id:"catalogo"}];
   tabs.forEach(t=>{
     const d=document.createElement("button");d.className="bnav-item"+(currentTab===t.id?" active":"");d.dataset.tab=t.id;
     d.innerHTML=`<div class="bnav-icon-wrap">${t.icon}</div><div>${t.label}</div>`;
@@ -437,7 +411,7 @@ function buildUI(){
   });
   renderPage();
 }
-function renderPage(){ tvNav.resetFocus(); const w=document.getElementById("pageWrap"); if(currentTab==="inicio")renderHome(w); else if(currentTab==="canais")renderCanais(w); else if(currentTab==="catalogo")renderCatalogo(w); else if(currentTab==="conta")renderConta(w); }
+function renderPage(){ tvNav.resetFocus(); const w=document.getElementById("pageWrap"); if(currentTab==="inicio")renderHome(w); else if(currentTab==="canais")renderCanais(w); else if(currentTab==="catalogo")renderCatalogo(w); }
 
 // ─── SEARCH ───────────────────────────────────────────────
 document.getElementById("searchInput").addEventListener("focus",()=>openSearch());
@@ -567,18 +541,6 @@ function renderCatalogo(w){
       <div class="grid-overlay"><div class="grid-name">${it.name}</div></div></div>`;
     d.onclick=()=>openPlayer(it);grid.appendChild(d);
   });
-}
-
-// ─── CONTA ────────────────────────────────────────────────
-function renderConta(w){
-  w.innerHTML=`<div class="info-page" style="padding-top:68px">
-    <div class="account-hero"><div class="account-avatar">${initials(USER)}</div>
-    <div class="account-info"><div class="account-name">${USER}</div><div class="account-server">${SERVER}</div></div></div>
-    <div class="stats-grid">
-      <div class="stat-box"><div class="stat-num">${vodItems.length}</div><div class="stat-lbl">Filmes</div></div>
-      <div class="stat-box"><div class="stat-num">${seriesItems.length}</div><div class="stat-lbl">Séries</div></div>
-      <div class="stat-box"><div class="stat-num">${liveItems.length}</div><div class="stat-lbl">Canais</div></div>
-    </div></div>`;
 }
 
 function switchTab(tab, noPush = false){ 
